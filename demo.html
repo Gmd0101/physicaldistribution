@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #myMap {
+            width: 100%;
+            height: 100%;
+            /* border: 3px solid red; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="myMap"></div>
+</body>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xmtKgb7EfHPXFr6HGjvHPlz8H6IBj9Lj"></script>
+<script type="text/javascript"
+    src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="./js/echarts.min.js"></script>
+<script src="./js/bmap.js"></script>
+<script src="./js/echarts-auto-tooltip.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('myMap'));
+    var geoCoordMap = {
+        '上海': [121.4648, 31.2891],
+        '郑州': [113.4668, 34.6234],
+        '广州': [113.5107, 23.2196],
+        '兰州': [103.767051, 36.068077]
+    };
+    var pointMap = [
+        [121.4648, 31.2891],
+        [113.4668, 34.6234],
+        [103.767051, 36.068077],
+        [113.5107, 23.2196]
+    ]
+
+    // 经度最大 纬度最小,  经度最小,纬度最大
+    var mapData = [
+        { name: '上海', car: "豫S213455", driver: "张三", date: "2019-03-29", value: 95 },
+        { name: '广州', car: "豫S213455", driver: "张三", date: "2019-03-29", value: 90 },
+        { name: '兰州', car: "豫S213455", driver: "张三", date: "2019-03-29", value: 80 },
+        { name: '郑州', car: "豫S213455", driver: "张三", date: "2019-03-29", value: 80 }
+    ];
+    var convertData = function (data) {
+        var res = [];
+        for (var i = 0; i < data.length; i++) {
+            var geoCoord = geoCoordMap[data[i].name];
+            if (geoCoord) {
+                res.push({
+                    name: data[i].name,
+                    value: geoCoord.concat(data[i].value),
+                    car: data[i].car,
+                    driver: data[i].driver,
+                    date: data[i].date
+                });
+            }
+        }
+        return res;
+    };
+
+    option = {
+        bmap: {
+            // center: [104.114129, 37.550339],
+            // zoom: 6,
+            roam: true
+        },
+        tooltip: {
+            show: true,
+            trigger: "item",
+            enterable: 'true',
+            hideDelay: 100,
+            formatter: function (e) {
+                var box = '<div>' + '地址:' + e.data.name + '<br />' + '车辆:' + e.data.car + '<br />' + '司机:' + e.data.driver + '<br />' + '日期:' + e.data.date + '</div>';
+                return box;
+                // console.log(e);
+            }
+        },
+        series: [
+            {
+                name: "位置",
+                type: "scatter",
+                symbol: "image://./img/car2.jpg",
+                // image://./img/car.jpg
+                symbolSize: 70,
+                symbolKeepAspect: true,
+                itemStyle: {
+                    opacity: 1
+                },
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'bottom',
+                        show: true
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                coordinateSystem: 'bmap',
+                zlevel: 1,
+                data: convertData(mapData)
+            }
+        ]
+    };
+    myChart.setOption(option);
+    //百度地图API功能	
+    var bmap = myChart.getModel().getComponent('bmap').getBMap();
+    bmap.setMinZoom(5);
+    // 112.6159255,29.6438385
+    function setMap(pointList) {
+        var point1 = 0, point2 = 0; var distance = 0;
+        var location1 = [], location2 = [];
+        // 最小纬度,最大纬度,最小经度,最大经度
+        var lngmin = 200, lngmax = 0, latmin = 200, latmax = 0;
+        for (var i = 0; i < pointList.length; i++) {
+            lngmin = pointList[i][0] < lngmin ? pointList[i][0] : lngmin;
+            lngmax = pointList[i][0] > lngmax ? pointList[i][0] : lngmax;
+            latmin = pointList[i][1] < latmin ? pointList[i][1] : latmin;
+            latmax = pointList[i][1] > latmax ? pointList[i][1] : latmax;
+            for (var j = i + 1; j < pointList.length; j++) {
+                point1 = new BMap.Point(pointList[i][0], pointList[i][1]);
+                console.log(point1);
+                point2 = pointList[j] ? new BMap.Point(pointList[j][0], pointList[j][1]) : point1;
+                location1 = bmap.getDistance(point1, point2) > distance ? pointList[i] : location1;
+                location2 = bmap.getDistance(point1, point2) > distance ? pointList[j] : location2;
+                distance = bmap.getDistance(point1, point2) > distance ? bmap.getDistance(point1, point2) : distance;
+            }
+        }
+        var centerPoint = { lng: (lngmax + lngmin) / 2, lat: (latmax + latmin) / 2 };
+        bmap.centerAndZoom(new BMap.Point(centerPoint.lng, centerPoint.lat), 6);
+        bmap.enableScrollWheelZoom(true);
+        var b = new BMap.Bounds(new BMap.Point(lngmin, latmin), new BMap.Point(lngmax, latmax));
+        try {
+            BMapLib.AreaRestriction.setBounds(bmap, b);
+        } catch (e) {
+            alert(e);
+        }
+    }
+    setMap(pointMap);
+
+    // console.log(distance);
+    tools.loopShowTooltip(myChart, option, { loopSeries: true }); // 使用本插件
+</script>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/fullPage.js/2.9.7/jquery.fullpage.min.css">
+    <link rel="stylesheet" href="./css/inventory.css">
+</head>
+
+<body>
+    <div id="fullPage">
+        <div class="section clearfloat">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="../可视化大屏幕/dgfx.html">可视化大屏幕</a></li>
+                </ul>
+            </div>
+            <div class="wrapper wrapper-one">
+                <header class="header">
+                    <button class="side-btn is-closed">
+                        <span class="btn-top"></span>
+                        <span class="btn-middle"></span>
+                        <span class="btn-bottom"></span>
+                    </button>
+                    <h1 class="title"></h1>
+                </header>
+                <div class="main">
+                    <div class="container-fluid">
+                        <div class="row fill-h">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  fill-h">
+                                <div class="table-box">
+                                    <table>
+                                        <thead class="inventory-thead">
+                                            <tr>
+                                                <th>订单日期</th>
+                                                <th>订单号</th>
+                                                <th>客户名称</th>
+                                                <th>数量</th>
+                                                <th>线路</th>
+                                                <th>派送车辆</th>
+                                                <th>车型</th>
+                                                <th>司机</th>
+                                                <th>状态</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-body inventory-list">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="../可视化大屏幕/dgfx.html">可视化大屏幕</a></li>
+                </ul>
+            </div>
+            <div class="wrapper wrapper-one">
+                <header class="header">
+                    <button class="side-btn is-closed">
+                        <span class="btn-top"></span>
+                        <span class="btn-middle"></span>
+                        <span class="btn-bottom"></span>
+                    </button>
+                    <h1 class="title"></h1>
+                </header>
+                <div class="main">
+                    <div class="container-fluid">
+
+
+                        <div class="row fill-h">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  fill-h">
+                                <div class="table-box">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>车牌号</th>
+                                                <th>车型</th>
+                                                <th>司机</th>
+                                                <th>司机电话</th>
+                                                <th>状态</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-body dispatch-list">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="../可视化大屏幕/dgfx.html">可视化大屏幕</a></li>
+                </ul>
+            </div>
+            <div class="wrapper wrapper-one">
+                <header class="header">
+                    <button class="side-btn is-closed">
+                        <span class="btn-top"></span>
+                        <span class="btn-middle"></span>
+                        <span class="btn-bottom"></span>
+                    </button>
+                    <h1 class="title"></h1>
+                </header>
+                <div class="main">
+                    <div class="container-fluid">
+                        <div class="row fill-h">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  fill-h">
+                                <div id="car-map"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xmtKgb7EfHPXFr6HGjvHPlz8H6IBj9Lj"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/fullPage.js/2.9.7/jquery.fullpage.min.js"></script>
+<script src="./JS/echarts.min.js"></script>
+<script src="./js/inventory.js"></script>
+
+</html>
